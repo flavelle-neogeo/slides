@@ -1,0 +1,373 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Vue 2 to 3</title>
+
+		<link rel="stylesheet" href="../dist/reset.css">
+		<link rel="stylesheet" href="../dist/reveal.css">
+		<link rel="stylesheet" href="../dist/theme/blood.css">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="../plugin/highlight/monokai.css">
+
+		<style>
+			.reveal-viewport {
+				/* background: url('./assets/vue_background.jpg'); */
+				background: linear-gradient(120deg, #42B883, #35495E);
+				background-size: cover;
+				/* the following are for firefox 70 */
+				opacity: 1;
+				z-index: 1;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="reveal">
+
+			<div
+				style="
+					background: url(assets/vue-logo.png);
+					background-size: cover;
+          position: absolute;
+          top: 1em;
+          left: 1em;
+          width: 140px;
+          height: 120px;
+					filter: drop-shadow(0px 0px 3px black);
+				"
+			></div>
+			<div
+				style="
+					background: url(assets/neogeo-logo.png);
+					background-size: cover;
+          position: absolute;
+          top: 1em;
+          right: 1em;
+          width: 300px;
+          height: 100px;
+					filter: drop-shadow(0px 0px 3px black);
+				"
+			></div>
+
+			<div class="slides">
+				<section>
+					<h1>
+						Vue
+					</h1>
+					<h2>
+						2 --> 3
+					</h2>
+				</section>
+
+				<section>
+					<section>
+						<h2>
+							Vue 2
+						</h2>
+						<ul>
+							<li>
+								Version mineure finale 2.7 (2022)
+							</li>
+							<li>
+								Fix pour les bugs critiques et mises à jour de sécurité pour les 18 mois suivants la 2.7
+							</li>
+							<li>
+								Passage en maintenance mode
+							</li>
+						</ul>
+					</section>
+				</section>
+
+				<section>
+					<h2>
+						Vue 3
+					</h2>
+					<ul>
+						<li>
+							Nouveautés
+						</li>
+						<li>
+							Breaking Changes
+						</li>
+						<li>
+							Ecosystème
+						</li>
+						<li>
+							Migration
+						</li>
+					</ul>
+				</section>
+
+				<section>
+					<section>
+						<h3>
+							Nouveautés
+						</h3>
+						<h4>
+							Performances
+						</h4>
+						<ul class="r-stretch">
+							<li>
+    						Taille du bundle jusqu'à 41% plus petite grâce au tree-shaking
+							</li>
+							<li>
+    						Rendu initial jusqu'à 55% plus rapide
+							</li>
+							<li>
+    						Mises à jour jusqu'à 133% plus rapides
+							</li>
+							<li>
+    						Réduction de la mémoire utilisée jusqu'à 54%
+							</li>
+						</ul>
+					</section>
+					<section>
+						<h3>
+							Nouveautés
+						</h3>
+						<h4>
+							Composition API
+						</h4>
+						<p>
+							Nouvel <strong>attribut "setup"</strong> permet d'associer nous-même 
+							chaque fragment de code à des <strong>hooks</strong>
+						</p>
+						<div class="r-stretch">
+							<img
+								width="49%"
+								src="assets/options-api-example.png"
+							/>
+							<img
+							width="50%"
+								src="assets/composition-api-example.png"
+							/>
+						</div>
+					</section>
+					<section>
+						<h3>
+							Nouveautés
+						</h3>
+						<h4>
+							Composition API
+						</h4>
+						<p>
+							Permet une meilleure organisation du code
+						</p>
+						<img
+							class="r-stretch"
+							src="assets/vue-code-organisation.png"
+						/>
+					</section>
+					<section>
+						<h3>
+							Nouveautés
+						</h3>
+						<h4>
+							TypeScript
+						</h4>
+						<p>
+							Vue 3 entièrement écrit en TypeScript
+						</p>
+						</ul>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h3>
+							Breaking Changes
+						</h3>
+						<h4>
+							API
+						</h4>
+						<ul class="r-fit-text">
+							<li>
+								Nouvelle API globale: <strong>createApp</strong>
+								<ul>
+									<li>
+										Retourne une <em>app instance</em> (nouveau concept de Vue 3)
+									</li>
+									<li>
+										Une <em>app instance</em> expose un subset des APIs globales de Vue 2 
+										(Vue.component, Vue.directive, Vue.mixin, ....)
+									</li>
+								</ul>
+							</li>
+							<li>
+								Tree-shaking support
+								<ul>
+									<li>
+										Changement de syntaxe permettant d'éviter le code mort
+									</li>
+									<li>
+										Les APIs qui ne sont pas utilisées seront éliminés du bundle final.
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</section>
+					<section>
+						<h3>
+							Breaking Changes
+						</h3>
+						<h4>
+							Templates directives
+						</h4>
+						<ul class="r-fit-text">
+							<li>
+								<strong>v-model:</strong>
+								<ul>
+									<li>
+										L'option <em>.sync</em> est supprimée et remplacé par un argument sur v-model
+									</li>
+									<li>
+										Plusieurs v-model sur un seul composant
+									</li>
+								</ul>
+							</li>
+							<li>
+								<strong>key:</strong>
+								<ul>
+									<li>
+										N'est plus nécessaire sur <em>v-if / v-for</em> car Vue 3 génére des keys uniques automatiquement
+									</li>
+								</ul>
+							</li>
+							<li>
+								Si utilisé sur le même élément, <strong>v-if</strong> aura la priorité sur <strong>v-for</strong>
+							</li>
+						</ul>
+					</section>
+					<section>
+						<h3>
+							Breaking Changes
+						</h3>
+						<h4>
+							Et plus ...
+						</h4>
+						<ul>
+							<li>
+								APIs supprimées: $events, filters, ...
+							</li>
+							<li>
+								Fonction render modifiée (utilisée seulement si on utilise pas de &lt;template&gt;)
+							</li>
+							<li>
+								...
+							</li>
+						</ul>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h3>
+							Ecosystème
+						</h3>
+						Build, State management, Router, IDE support, ...
+					</section>
+					<section>
+						<h3>
+							Vite
+						</h3>
+						<img src="assets/vite_logo.svg" height="100"/>
+						<h4>
+							Build tools
+						</h4>
+						<div>
+							Remplace <strong>vue-cli</strong> qui est passé en maintenance mode et n'est plus recommanbdé pour les nouveaux projets
+						</div>
+					</section>
+					<section>
+						<h3>
+							Pinia
+						</h3>
+						<img src="assets/pinia_logo.svg" height="100"/>
+						<h4>
+							State management
+						</h4>
+						<div>
+							Prototype pour vuex 5 devenu la solution de référence
+						</div>
+					</section>
+					<section>
+						<h3>
+							Vue Router 4.0
+						</h3>
+						<img src="assets/vuerouter_logo.png" height="100"/>
+						<h4>
+							Routing
+						</h4>
+						<div>
+							Vue supporté par Vue Router 4 qui comprend lui-même des breaking changes
+						</div>
+					</section>
+					<section>
+						<h3>
+							Volar
+						</h3>
+						<img src="assets/vscode_logo.png" height="100"/>
+						<h4>
+							IDE support
+						</h4>
+						<div>
+							<p>Nouvelle extension officielle pour VSCode.</p>
+							<p>Support TypeScript amélioré.</p>
+						</div>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h3>
+							Migration
+						</h3>
+						<div>
+							<p>
+								Un build de migration existe: @vue/compat
+							</p>
+							<p>
+								<ul>
+									<li>
+										Limitations:
+										<ul>
+											<li>
+												Certaines dépendences qui repose sur l'API interne de Vue 2
+											</li>
+											<li>
+												Vue 3 ne supporte pas Internet Explorer 11
+											</li>
+										</ul>
+									</li>
+								</ul>
+							</p>
+						</div>
+					</section>
+				</section>
+			</div>
+		</div>
+
+		<script src="../dist/reveal.js"></script>
+		<script src="../plugin/notes/notes.js"></script>
+		<script src="../plugin/markdown/markdown.js"></script>
+		<script src="../plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [
+					RevealMarkdown,
+					RevealHighlight,
+					RevealNotes
+				]
+			});
+		</script>
+	</body>
+</html>
