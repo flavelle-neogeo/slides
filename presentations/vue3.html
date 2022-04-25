@@ -132,8 +132,10 @@
 							Composition API
 						</h4>
 						<p>
-							Nouvel <strong>attribut "setup"</strong> permet d'associer nous-même 
-							chaque fragment de code à des <strong>hooks</strong>
+							Nouvel <strong>attribut "setup"</strong> permet d'utiliser la composition API 
+							et ainsi d'associer nous-même chaque fragment de code à des <strong>hooks</strong>.
+							Les imports et varaibles/fonctions déclarés dans &lt;script setup&gt; 
+							sont accessible directement dans le template.
 						</p>
 						<div class="r-stretch">
 							<img
@@ -185,10 +187,16 @@
 						</h4>
 						<ul class="r-fit-text">
 							<li>
+								Vue 2 n'a pas de concept de "app", mais plusieurs APIs globales (Vue.component, Vue.directive, ...)
+							</li>
+							<li>
 								Nouvelle API globale: <strong>createApp</strong>
 								<ul>
 									<li>
 										Retourne une <em>app instance</em> (nouveau concept de Vue 3)
+									</li>
+									<li>
+										La nouvelle règle d'or est que toute API qui modifie le comportement de Vue est maintenant transféré dans l'<em>app instance</em>
 									</li>
 									<li>
 										Une <em>app instance</em> expose un subset des APIs globales de Vue 2 
@@ -279,6 +287,9 @@
 						</h4>
 						<div>
 							Remplace <strong>vue-cli</strong> qui est passé en maintenance mode et n'est plus recommanbdé pour les nouveaux projets
+							<p>
+								Nécessite Node.js version >= 12.2.0
+							</p>
 						</div>
 					</section>
 					<section>
@@ -335,7 +346,8 @@
 										Limitations:
 										<ul>
 											<li>
-												Certaines dépendences qui repose sur l'API interne de Vue 2
+												Certaines dépendences qui repose sur l'API interne de Vue 2 
+												et qui n'ont pas encore de version compatible avec Vue3
 											</li>
 											<li>
 												Vue 3 ne supporte pas Internet Explorer 11
@@ -345,6 +357,96 @@
 								</ul>
 							</p>
 						</div>
+					</section>
+
+					<section data-markdown>
+						<textarea data-template>
+							### Guide de migration
+							- Installer Node.js 14
+							- Mettre à jour sa version de vue-cli
+							```bash
+							npm install -g @vue/cli@next
+							```
+							- Mettre à jour les plugins vue-cli du projets
+							```bash
+							vue upgrade --legacy-peer-deps
+							```
+							Le flag <em>--legacy-peer-deps</em> devra être rajouté à toutes les installations npm
+							pour ne pas être bloqué par les erreurs dûes aux dépendences potentiellement installées sur le projets
+							n'étant pas compatible avec Vue 3.
+
+							---
+
+							### Guide de migration
+							- Mettre à jour le package.json avec Vue 3 et Vue compat
+							```json
+							"dependencies": {
+								-  "vue": "^2.6.12",
+								+  "vue": "^3.1.0",
+								+  "@vue/compat": "^3.1.0"
+									 ...
+								},
+								"devDependencies": {
+								-  "vue-template-compiler": "^2.6.12",
+								+  "@vue/compiler-sfc": "^3.1.0"
+								}
+							```
+
+							---
+
+							### Guide de migration
+							- Utiliser vue/compat dans la config vue:
+
+							```js
+							// vue.config.js
+							module.exports = {
+								chainWebpack: (config) => {
+									config.resolve.alias.set('vue', '@vue/compat')
+							
+									config.module
+										.rule('vue')
+										.use('vue-loader')
+										.tap((options) => {
+											return {
+												...options,
+												compilerOptions: {
+													compatConfig: {
+														MODE: 2
+													}
+												},
+												// les options habituelles vont ici (publicPath, ...)
+											}
+										})
+								}
+							};
+							```
+
+							---
+
+							### Guide de migration
+
+							- Désinstaller les anciennes dépendences, puis tout réinstaller et compiler-sfc
+							```bash
+							rm -rf /node-modules
+							rm package-lock.json
+							npm install --legacy-peer-deps
+							npm run serve
+							```
+
+							Des erreurs de compilation devraient apparaîtrent en raison de l'utilisations 
+							de fonctionnalités dépréciées (les <em>filters</em> par exemple).
+							Les corriger avant de passer à la suite.
+
+							---
+
+							### Guide de migration
+
+							
+							Puis mettre à jour le point de montage, le store et le router comme indiqué 
+							dans la page suivante (point 8 à 12)
+							
+							https://v3-migration.vuejs.org/migration-build.html#installation
+						</textarea>
 					</section>
 				</section>
 			</div>
